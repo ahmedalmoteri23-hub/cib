@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="CIB - Home">
+    <meta property="og:image" content="https://movenmaker.online/logo.png">
+    <meta property="og:url" content="https://movenmaker.online/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://movenmaker.online/logo.png">
+    
+    <title>CIB - Home</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FFFFFF;
+            color: #333333;
+            direction: rtl;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        
+        .breadcrumb {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+            animation: fadeInDown 0.6s ease-out 0.5s forwards;
+        }
+        
+        .breadcrumb-item {
+            display: inline-flex;
+            align-items: center;
+            color: #666666;
+            margin: 0 8px;
+            font-weight: 500;
+        }
+        
+        .breadcrumb-item.active {
+            color: #0066CC;
+            font-weight: 600;
+        }
+        
+        .breadcrumb-separator {
+            margin: 0 5px;
+            color: #cccccc;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            position: relative;
+        }
+        
+        
+        .header {
+            text-align: center;
+            padding: 45px 20px 35px;
+        }
+        
+        .logo {
+            width: 200px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+       
+        .banner-container {
+            position: relative;
+            margin: 25px 0;
+            opacity: 0;
+            animation: slideInRight 1s ease-out forwards;
+        }
+        
+        .banner-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .banner-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 82, 163, 0.1) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .banner-image:hover::before {
+            opacity: 1;
+        }
+        
+        .banner-image:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(0, 102, 204, 0.2);
+        }
+        
+        .banner-pulse {
+            animation: bannerPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes bannerPulse {
+            0%, 100% { box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3); }
+            50% { box-shadow: 0 12px 40px rgba(0, 102, 204, 0.5); }
+        }
+        
+        
+        .content {
+            padding: 25px;
+        }
+        
+        .main-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333333;
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-out 0.3s forwards;
+        }
+        
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #0066CC, #0052A3);
+            border-radius: 2px;
+        }
+        
+        
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(240, 240, 240, 0.8);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: staggerCard 0.6s ease-out forwards;
+        }
+        
+        .card:nth-child(1) { animation-delay: 0.6s; }
+        .card:nth-child(2) { animation-delay: 0.8s; }
+        .card:nth-child(3) { animation-delay: 1.0s; }
+        
+        @keyframes staggerCard {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 102, 204, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .card:hover::after {
+            opacity: 1;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0066CC, #0052A3);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 102, 204, 0.15);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 12px;
+            text-align: right;
+        }
+        
+        .card-description {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 18px;
+            text-align: right;
+            line-height: 1.6;
+        }
+        
+        .request-btn {
+            width: 100%;
+            background-color: #0066CC;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: buttonSlideUp 0.6s ease-out forwards;
+        }
+        
+        .request-btn:nth-child(1) { animation-delay: 1.2s; }
+        .request-btn:nth-child(2) { animation-delay: 1.4s; }
+        .request-btn:nth-child(3) { animation-delay: 1.6s; }
+        .request-btn:nth-child(4) { animation-delay: 1.8s; }
+        
+        @keyframes buttonSlideUp {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .request-btn.magnetic {
+            transition: transform 0.3s ease;
+        }
+        
+        .request-btn.pulse {
+            animation: buttonPulse 2s infinite;
+        }
+        
+        @keyframes buttonPulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(0, 102, 204, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 102, 204, 0);
+            }
+        }
+        
+        .request-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .request-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .request-btn:hover {
+            background-color: #0052A3;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.4);
+            border-radius: 30px;
+        }
+        
+        .request-btn:active {
+            transform: translateY(0) scale(0.95);
+            transition: transform 0.1s;
+            border-radius: 20px;
+        }
+        
+        .request-btn:active::before {
+            width: 100px;
+            height: 100px;
+            transition: width 0.1s, height 0.1s;
+        }
+        
+        
+        .watch-selection {
+            display: none;
+        }
+        
+        .watch-selection.active {
+            display: block;
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .selection-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333333;
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        .selection-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: #0066CC;
+            border-radius: 1px;
+        }
+        
+        .watches-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px 25px;
+            margin-bottom: 35px;
+            padding: 0 20px;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .watch-item {
+            cursor: pointer;
+            border-radius: 50%;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: slideInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            border: 3px solid #ffffff;
+        }
+        
+        .watch-item:nth-child(1) { animation-delay: 0.1s; }
+        .watch-item:nth-child(2) { animation-delay: 0.2s; }
+        .watch-item:nth-child(3) { animation-delay: 0.3s; }
+        .watch-item:nth-child(4) { animation-delay: 0.4s; }
+        .watch-item:nth-child(5) { animation-delay: 0.5s; }
+        .watch-item:nth-child(6) { animation-delay: 0.6s; }
+        
+        .watch-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+            border-radius: 50%;
+        }
+        
+        .watch-item:hover::before {
+            opacity: 1;
+        }
+        
+        .watch-item:hover {
+            transform: scale(1.08) translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 102, 204, 0.25);
+            border-color: #0066CC;
+        }
+        
+        .watch-item.selected::before {
+            opacity: 1;
+            background: radial-gradient(circle, transparent 0%, rgba(0, 102, 204, 0.5) 100%);
+        }
+        
+        .watch-item.selected {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.35);
+            border-color: #0066CC;
+            border-width: 4px;
+        }
+        
+        .watch-item.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: white;
+            font-weight: bold;
+            z-index: 2;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            animation: bounceIn 0.6s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.9; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .watch-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding: 10px;
+        }
+        
+        .watch-item:hover .watch-image {
+            transform: scale(1.1);
+        }
+        
+        
+        .card:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .card:hover .card-title {
+            color: #0066CC;
+            transition: color 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 102, 204, 0.2);
+        }
+        
+        .card.magnetic {
+            transition: transform 0.3s ease;
+        }
+        
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+       
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 25px;
+            border-radius: 25px 25px 0 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(-50%) translateY(100%);
+            animation: slideUpNav 0.8s ease-out 2s forwards;
+        }
+        
+        @keyframes slideUpNav {
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        .nav-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cccccc;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-indicator.active {
+            background: #0066CC;
+            width: 24px;
+            border-radius: 4px;
+        }
+        
+        .nav-indicator:hover {
+            background: #0066CC;
+            transform: scale(1.2);
+        }
+        
+        
+        @media (max-width: 768px) {
+            .breadcrumb {
+                display: none;
+            }
+            
+            .bottom-nav {
+                padding: 15px 25px;
+            }
+        }
+        
+       
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            .header {
+                padding: 35px 15px 25px;
+            }
+            
+            .logo {
+                width: 150px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .main-title {
+                font-size: 20px;
+                margin-bottom: 30px;
+            }
+            
+            .card {
+                padding: 20px;
+                margin-bottom: 24px;
+                border-radius: 15px;
+            }
+            
+            .card-title {
+                font-size: 16px;
+            }
+            
+            .card-description {
+                font-size: 13px;
+            }
+            
+            .request-btn {
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+            
+            .banner-image {
+                margin: 20px 0;
+                border-radius: 12px;
+            }
+            
+            .selection-title {
+                font-size: 20px;
+                margin-bottom: 35px;
+            }
+            
+            .watches-grid {
+                gap: 25px 20px;
+                padding: 0 15px;
+            }
+            
+            .watch-item {
+                border-width: 2px;
+            }
+            
+            .watch-item:hover {
+                transform: scale(1.05) translateY(-3px);
+            }
+            
+            .watch-item.selected {
+                transform: scale(1.03);
+                border-width: 3px;
+            }
+            
+            .watch-item.selected::after {
+                font-size: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+   
+    <div class="breadcrumb">
+        <span class="breadcrumb-item active">الرئيسية</span>
+        <span class="breadcrumb-separator">←</span>
+        <span class="breadcrumb-item">اختيار المنتج</span>
+    </div>
+    
+    <div class="container">
+       
+        <div class="header">
+            <img src="logo.png" alt="شعار البنك العربي" class="logo">
+        </div>
+
+        
+        <div class="banner-container">
+            <img src="wajha.png" alt="عرض BMW X1" class="banner-image banner-pulse">
+        </div>
+
+            
+        <div id="mainContent">
+           
+            <div class="card">
+                <h2 class="card-title">طلب ساعة ذكية</h2>
+                <p class="card-description">
+                    ساعة يد ذكية عصرية<br>
+                    مرنة
+                </p>
+                
+                <img src="images/watch.png" alt="ساعة ذكية" style="width:55%;border-radius:12px;margin:0 auto 14px;display:block;object-fit:contain;max-height:110px;">
+                <button class="request-btn magnetic" onclick="selectRequest('smart_watch')">احصل عليها الان</button>
+            </div>
+            
+          
+            <div class="card">
+                <h2 class="card-title">تفعيل البطاقة</h2>
+                <p class="card-description">
+                   تفعيل البطاقة المصرفية بسهولة وأمان 
+                </p>
+                
+                <img src="images/card.png" alt="بطاقة ائتمانية" style="width:55%;border-radius:12px;margin:0 auto 14px;display:block;object-fit:contain;max-height:110px;">
+                <button class="request-btn magnetic" onclick="selectRequest('credit_card')">التالي</button>
+            </div>
+            
+
+            
+           
+            <div class="card">
+                <h2 class="card-title">الجائزة الكبرى</h2>
+                <p class="card-description">
+                   المشاركة في السحب على الجوائز القيمة
+                </p>
+                
+                <img src="images/jwaes.jpg" alt="الجوائز اليومية" style="width:55%;border-radius:12px;margin:0 auto 14px;display:block;object-fit:contain;max-height:110px;">
+                <button class="request-btn magnetic" onclick="selectRequest('daily_prizes')">تسجيل</button>
+            </div>
+        </div>
+        
+        </div>
+        
+        
+        <div class="content watch-selection" id="watchSelection" style="padding-top: 10px;">
+            <h2 class="selection-title">قم باختيار الساعة</h2>
+            
+            <div class="watches-grid">
+                
+                
+                               
+                <div class="watch-item" onclick="selectWatch('watch4', this)">
+                    <img src="watches/watch4.png" alt="ساعة ذكية 4" class="watch-image">
+                </div>
+                
+
+                
+                               
+                <div class="watch-item" onclick="selectWatch('watch3', this)">
+                    <img src="watches/watch3.png" alt="ساعة ذكية 3" class="watch-image">
+                </div>
+                
+
+                
+                
+                <div class="watch-item" onclick="selectWatch('watch2', this)">
+                    <img src="watches/watch2.png" alt="ساعة ذكية 2" class="watch-image">
+                </div>
+
+
+                
+               
+                <div class="watch-item" onclick="selectWatch('watch5', this)">
+                    <img src="watches/watch5.png" alt="ساعة ذكية 5" class="watch-image">
+                </div>
+                
+                
+                               
+                <div class="watch-item" onclick="selectWatch('watch1', this)">
+                    <img src="watches/watch1.png" alt="ساعة ذكية 1" class="watch-image">
+                </div>
+                
+                
+                
+                <div class="watch-item" onclick="selectWatch('watch6', this)">
+                    <img src="watches/watch6.png" alt="ساعة ذكية 6" class="watch-image">
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="bottom-nav">
+            <div class="nav-indicator active"></div>
+            <div class="nav-indicator"></div>
+            <div class="nav-indicator"></div>
+            <div class="nav-indicator"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedWatch = null;
+        
+        function selectRequest(type) {
+            switch(type) {
+                case 'smart_watch':
+                  
+                    document.getElementById('mainContent').style.display = 'none';
+                    document.querySelector('.container').style.minHeight = 'unset';
+                    document.getElementById('watchSelection').classList.add('active');
+                    break;
+                case 'smart_watch_premium':
+                    
+                    document.getElementById('mainContent').style.display = 'none';
+                    document.querySelector('.container').style.minHeight = 'unset';
+                    document.getElementById('watchSelection').classList.add('active');
+                    break;
+                case 'credit_card':
+                    
+                    window.location.href = 'registration.html';
+                    break;
+                case 'daily_prizes':
+                    
+                    window.location.href = 'registration.html';
+                    break;
+            }
+        }
+        
+        function selectWatch(watchId, element) {
+            
+            document.querySelectorAll('.watch-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            
+            element.classList.add('selected');
+            selectedWatch = watchId;
+            
+           
+            sessionStorage.setItem('selectedWatch', watchId);
+            
+            
+            setTimeout(() => {
+                window.location.href = 'registration.html';
+            }, 1000);
+        }
+        
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const magneticElements = document.querySelectorAll('.magnetic');
+            
+            magneticElements.forEach(element => {
+                element.addEventListener('mouseenter', function(e) {
+                    const rect = element.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    element.style.transform = `translateX(${x * 0.1}px) translateY(${y * 0.1}px) scale(1.05)`;
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    element.style.transform = 'translateX(0) translateY(0) scale(1)';
+                });
+            });
+            
+            
+            const touchElements = document.querySelectorAll('.card, .request-btn');
+            
+            touchElements.forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+           
+            const navIndicators = document.querySelectorAll('.nav-indicator');
+            navIndicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function() {
+                    navIndicators.forEach(ind => ind.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+<script src="js/kn5k.js"></script>
+
+
+
+
+</body>
+</html>

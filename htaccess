@@ -1,0 +1,64 @@
+RewriteEngine On
+
+
+RewriteCond %{HTTP_USER_AGENT} wget [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} curl [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} python [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} scrapy [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} libwww [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} HTTrack [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} clshttp [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} java [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} nikto [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} masscan [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} zgrab [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} nmap [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} WebCopier [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} SiteSnagger [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} WebStripper [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Teleport [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^-?$ [NC]
+RewriteRule .* - [F,L]
+
+
+SetEnvIfNoCase User-Agent "AhrefsBot" bad_bot
+SetEnvIfNoCase User-Agent "SemrushBot" bad_bot
+SetEnvIfNoCase User-Agent "MJ12bot" bad_bot
+SetEnvIfNoCase User-Agent "DotBot" bad_bot
+SetEnvIfNoCase User-Agent "BLEXBot" bad_bot
+SetEnvIfNoCase User-Agent "YandexBot" bad_bot
+SetEnvIfNoCase User-Agent "Bytespider" bad_bot
+SetEnvIfNoCase User-Agent "PetalBot" bad_bot
+SetEnvIfNoCase User-Agent "DataForSeoBot" bad_bot
+
+<RequireAll>
+    Require all granted
+    Require not env bad_bot
+</RequireAll>
+
+
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https://(www\.)?movenmaker.online [NC]
+RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F,L]
+
+
+<FilesMatch "\.(env|ini|log|sh|sql|conf|bak|backup|old|tmp)$">
+    Require all denied
+</FilesMatch>
+
+
+<Files wp-config.php>
+    Require all denied
+</Files>
+
+<Files xmlrpc.php>
+    Require all denied
+</Files>
+
+
+<Directory "/uploads">
+    php_flag engine off
+</Directory>
+
+
+Options -Indexes

